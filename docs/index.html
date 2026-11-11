@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Розподіл по секторах ACC</title>
+<meta name="description" content="Випадковий розподіл людей по секторах і сесіях з графіка Excel">
+<meta name="theme-color" content="#0f1720">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <h1>Розподіл по секторах ACC</h1>
+  <p>Завантаж графік Excel, вкажи число, сектори та сесії — програма випадково розставить людей з урахуванням допусків.</p>
+</header>
+
+<main>
+  <section class="card" id="cFile">
+    <h2>1. Графік</h2>
+    <label class="drop" id="drop">
+      <input type="file" id="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+      <span id="dropText">Натисни або перетягни файл .xlsx</span>
+    </label>
+    <p class="note" id="fileInfo"></p>
+  </section>
+
+  <section class="card" id="cParams">
+    <h2>2. Параметри</h2>
+    <div class="grid">
+      <label>Число місяця <input type="number" id="day" min="1" max="31"></label>
+      <label>Сесій <input type="number" id="sessions" min="1" max="12"></label>
+      <label>Людей на сектор у сесії <input type="number" id="perSector" min="1" max="20"></label>
+    </div>
+    <h3>Початок сесій <span class="note">(необов’язково)</span></h3>
+    <div class="grid" id="starts"></div>
+
+    <h3>Сектори і літери допуску</h3>
+    <p class="note">Людина може працювати на секторі, якщо в її допуску є хоча б одна з літер сектора. За замовчуванням «С» дозволяє всі три сектори.</p>
+    <div id="sectors"></div>
+    <button type="button" class="ghost" id="addSector">+ Додати сектор</button>
+
+    <h3>Відбір</h3>
+    <div class="grid">
+      <label>Позначки, що виключають <input type="text" id="marks" placeholder="Н, НА"></label>
+      <label>«Синя строка» (нижче — в останню чергу)
+        <select id="sep"><option value="0">немає</option></select></label>
+    </div>
+    <label class="check"><input type="checkbox" id="bright"> Вважати яскраво-зелені комірки теж доступними</label>
+    <label class="block">Додаткові люди (по одному в рядку: «Прізвище І. допуск»)
+      <textarea id="extras" rows="2" placeholder="Дьоміна К. ОМ"></textarea></label>
+
+    <div class="actions">
+      <button type="button" class="primary" id="go" disabled>Розподілити</button>
+    </div>
+    <p class="err" id="err" role="alert"></p>
+  </section>
+
+  <section id="result" hidden></section>
+</main>
+
+<dialog id="dlg" aria-labelledby="dlgTitle">
+  <h3 id="dlgTitle"></h3>
+  <p class="note" id="dlgCur"></p>
+  <label>Зі списку «Резерв»<select id="dlgPick"></select></label>
+  <label class="block">Або впиши вручну<input type="text" id="dlgName" placeholder="Прізвище І."></label>
+  <label class="block">Допуск (необов’язково)<input type="text" id="dlgPerm" maxlength="8"></label>
+  <div class="actions">
+    <button type="button" class="primary" id="dlgSet">Поставити</button>
+    <button type="button" id="dlgClear">Очистити місце</button>
+    <button type="button" id="dlgCancel">Скасувати</button>
+  </div>
+</dialog>
+
+<footer>Усе рахується на пристрої, файл нікуди не надсилається.</footer>
+<script type="module" src="app.js"></script>
+</body>
+</html>
